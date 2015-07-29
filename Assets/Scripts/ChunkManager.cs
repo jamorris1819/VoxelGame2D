@@ -63,10 +63,10 @@ public class ChunkManager : MonoBehaviour {
 		}
 	}
 
-	public void DamageBlock(float x, float y, Transform item) {
+	public void DamageBlock(float x, float y) {
 		Vector2 position = GetPosition (x, y);
 		Chunk chunk = GetChunk (x).GetComponent<Chunk>();
-		chunk.DamageBlock (position.x, position.y, item);
+		chunk.DamageBlock (position.x, position.y);
 	}
 
 	public void DestroyBlock(float x, float y, bool remains) {

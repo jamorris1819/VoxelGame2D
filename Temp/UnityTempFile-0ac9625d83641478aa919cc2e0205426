@@ -64,6 +64,7 @@
 'Assets/Scripts/Old/Item.cs'
 'Assets/Scripts/Old/SimplexNoise.cs'
 'Assets/Scripts/Old/WorldGeneration.cs'
+'Assets/Scripts/OldChunk.cs'
 'Assets/Scripts/Particle.cs'
 'Assets/Scripts/Player.cs'
 -r:'/Applications/Unity/Unity.app/Contents/Frameworks/Mono/lib/mono/unity/System.Runtime.Serialization.dll'

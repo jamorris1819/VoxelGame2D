@@ -56,6 +56,7 @@
      <Compile Include="Assets\Scripts\Old\Item.cs" />
      <Compile Include="Assets\Scripts\Old\SimplexNoise.cs" />
      <Compile Include="Assets\Scripts\Old\WorldGeneration.cs" />
+     <Compile Include="Assets\Scripts\OldChunk.cs" />
      <Compile Include="Assets\Scripts\Particle.cs" />
      <Compile Include="Assets\Scripts\Player.cs" />
  <Reference Include="UnityEngine.UI">

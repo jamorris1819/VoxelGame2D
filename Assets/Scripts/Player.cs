@@ -73,7 +73,7 @@ public class Player : MonoBehaviour {
 			Chunk chunk = chunkManager.GetChunk(clickPosOriginal.x).GetComponent<Chunk>();
 			float distance = Vector2.Distance (clickPosOriginal, transformPos);
 			if(distance <= 4f)
-				chunkManager.DamageBlock (clickPos.x, clickPos.y, currentItem);
+				chunkManager.DamageBlock (clickPos.x, clickPos.y);
 			else Debug.Log ("Distance: " + distance);
 
 
