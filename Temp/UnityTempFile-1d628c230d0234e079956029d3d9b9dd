@@ -59,6 +59,7 @@
 'Assets/Scripts/Chunk.cs'
 'Assets/Scripts/ChunkManager.cs'
 'Assets/Scripts/FollowCamera.cs'
+'Assets/Scripts/Inventory.cs'
 'Assets/Scripts/NoiseLayer.cs'
 'Assets/Scripts/Old/Generator.cs'
 'Assets/Scripts/Old/Item.cs'

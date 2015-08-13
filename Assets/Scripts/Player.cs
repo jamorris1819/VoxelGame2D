@@ -74,9 +74,6 @@ public class Player : MonoBehaviour {
 			float distance = Vector2.Distance (clickPosOriginal, transformPos);
 			if(distance <= 4f)
 				chunkManager.DamageBlock (clickPos.x, clickPos.y);
-			else Debug.Log ("Distance: " + distance);
-
-
 
 
 			/*if (hitObject != null) {

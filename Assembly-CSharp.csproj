@@ -51,6 +51,7 @@
      <Compile Include="Assets\Scripts\Chunk.cs" />
      <Compile Include="Assets\Scripts\ChunkManager.cs" />
      <Compile Include="Assets\Scripts\FollowCamera.cs" />
+     <Compile Include="Assets\Scripts\Inventory.cs" />
      <Compile Include="Assets\Scripts\NoiseLayer.cs" />
      <Compile Include="Assets\Scripts\Old\Generator.cs" />
      <Compile Include="Assets\Scripts\Old\Item.cs" />

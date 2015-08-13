@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class Chunk : MonoBehaviour {
@@ -12,11 +13,41 @@ public class Chunk : MonoBehaviour {
 	// Miscellaneous variables
 	int xPos;
 	Transform worldGenerator;
+	public GameObject[] invSlots;
+	public Sprite itemBack;
+	public GameObject[] invNumbers;
+	public int[] invNumberValues;
 
 	void Awake() {
 		worldGenerator = GameObject.Find ("WorldGenerator").transform;
 		chunkManager = worldGenerator.GetComponent<ChunkManager> ();
 		blockLibrary = worldGenerator.GetComponent<BlockLibrary> ();
+		invSlots = new GameObject[9];
+		invSlots[0] = GameObject.Find ("slot0");
+		invSlots[1] = GameObject.Find ("slot1");
+		invSlots[2] = GameObject.Find ("slot2");
+		invSlots[3] = GameObject.Find ("slot3");
+		invSlots[4] = GameObject.Find ("slot4");
+		invSlots[5] = GameObject.Find ("slot5");
+		invSlots[6] = GameObject.Find ("slot6");
+		invSlots[7] = GameObject.Find ("slot7");
+		invSlots[8] = GameObject.Find ("slot8");
+
+		invNumbers = new GameObject[9];
+		invNumbers[0] = GameObject.Find ("slot0number");
+		invNumbers[1] = GameObject.Find ("slot1number");
+		invNumbers[2] = GameObject.Find ("slot2number");
+		invNumbers[3] = GameObject.Find ("slot3number");
+		invNumbers[4] = GameObject.Find ("slot4number");
+		invNumbers[5] = GameObject.Find ("slot5number");
+		invNumbers[6] = GameObject.Find ("slot6number");
+		invNumbers[7] = GameObject.Find ("slot7number");
+		invNumbers[8] = GameObject.Find ("slot8number");
+
+		invNumberValues = new int[9];
+		for (int i = 0; i < 9; i++) {
+			invNumberValues[i] = 0;
+		}
 		xPos = int.Parse (transform.position.x.ToString ());
 		GenerateChunk ();
 	}
@@ -115,6 +146,14 @@ public class Chunk : MonoBehaviour {
 			Block blockComponent = block.GetComponent<Block> ();
 			blockComponent.health -= Time.deltaTime;
 			if(blockComponent.health <= 0) {
+				for(int i = 0; i <= 9; i++) {
+					if(invSlots[i].GetComponent<Image>().sprite == itemBack || invSlots[i].GetComponent<Image>().sprite == block.GetComponent<SpriteRenderer>().sprite){
+						invSlots[i].GetComponent<Image>().sprite = block.GetComponent<SpriteRenderer>().sprite;
+						invNumberValues[i] += 1;
+						invNumbers[i].GetComponent<Text>().text = (invNumberValues[i] > 1) ? invNumberValues[i].ToString () : "";
+						break;
+					}
+				}
 				DestroyBlock (x, y, true);
 			}
 		}
