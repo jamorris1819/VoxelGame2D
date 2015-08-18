@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Chunk : MonoBehaviour {
 
@@ -13,41 +14,11 @@ public class Chunk : MonoBehaviour {
 	// Miscellaneous variables
 	int xPos;
 	Transform worldGenerator;
-	public GameObject[] invSlots;
-	public Sprite itemBack;
-	public GameObject[] invNumbers;
-	public int[] invNumberValues;
 
 	void Awake() {
 		worldGenerator = GameObject.Find ("WorldGenerator").transform;
 		chunkManager = worldGenerator.GetComponent<ChunkManager> ();
 		blockLibrary = worldGenerator.GetComponent<BlockLibrary> ();
-		invSlots = new GameObject[9];
-		invSlots[0] = GameObject.Find ("slot0");
-		invSlots[1] = GameObject.Find ("slot1");
-		invSlots[2] = GameObject.Find ("slot2");
-		invSlots[3] = GameObject.Find ("slot3");
-		invSlots[4] = GameObject.Find ("slot4");
-		invSlots[5] = GameObject.Find ("slot5");
-		invSlots[6] = GameObject.Find ("slot6");
-		invSlots[7] = GameObject.Find ("slot7");
-		invSlots[8] = GameObject.Find ("slot8");
-
-		invNumbers = new GameObject[9];
-		invNumbers[0] = GameObject.Find ("slot0number");
-		invNumbers[1] = GameObject.Find ("slot1number");
-		invNumbers[2] = GameObject.Find ("slot2number");
-		invNumbers[3] = GameObject.Find ("slot3number");
-		invNumbers[4] = GameObject.Find ("slot4number");
-		invNumbers[5] = GameObject.Find ("slot5number");
-		invNumbers[6] = GameObject.Find ("slot6number");
-		invNumbers[7] = GameObject.Find ("slot7number");
-		invNumbers[8] = GameObject.Find ("slot8number");
-
-		invNumberValues = new int[9];
-		for (int i = 0; i < 9; i++) {
-			invNumberValues[i] = 0;
-		}
 		xPos = int.Parse (transform.position.x.ToString ());
 		GenerateChunk ();
 	}
@@ -79,8 +50,9 @@ public class Chunk : MonoBehaviour {
 				Transform backgroundBlock = null;
 				// Decide which block should be used
 				if(y == dirtHeight + 1) {							// If the block is just above the dirt, perhaps make some grass leaves.
-					if(Noise(x, y, 5, 30, 1) <= 8)
-						foregroundBlock = blockLibrary.grassLeaves;
+					if(Noise(x, y, 2, 30, 1) <= 6) {
+						foregroundBlock = blockLibrary.sapling;
+					}
 				} else if(y == dirtHeight) {							// If the block is on the surface of the dirt
 					foregroundBlock = blockLibrary.grass;
 					backgroundBlock = blockLibrary.dirtBack;
@@ -121,6 +93,7 @@ public class Chunk : MonoBehaviour {
 				} else backgroundBlocks[x - xPos, y] = null;
 			}
 		}
+
 	}
 
 	public void PlaceBlock(float x, float y, Transform block) {
@@ -129,6 +102,7 @@ public class Chunk : MonoBehaviour {
 		Transform b = Instantiate (block, new Vector3 (xx + transform.position.x, yy, 0), Quaternion.identity) as Transform;
 		b.parent = transform;
 		b.localPosition = new Vector3 (xx, yy, 0);
+		b.gameObject.SetActive (true);
 		foregroundBlocks [xx, yy] = b;
 	}
 	
@@ -146,18 +120,11 @@ public class Chunk : MonoBehaviour {
 			Block blockComponent = block.GetComponent<Block> ();
 			blockComponent.health -= Time.deltaTime;
 			if(blockComponent.health <= 0) {
-				for(int i = 0; i <= 9; i++) {
-					if(invSlots[i].GetComponent<Image>().sprite == itemBack || invSlots[i].GetComponent<Image>().sprite == block.GetComponent<SpriteRenderer>().sprite){
-						invSlots[i].GetComponent<Image>().sprite = block.GetComponent<SpriteRenderer>().sprite;
-						invNumberValues[i] += 1;
-						invNumbers[i].GetComponent<Text>().text = (invNumberValues[i] > 1) ? invNumberValues[i].ToString () : "";
-						break;
-					}
-				}
+				//if(blockComponent.dropBlock != null)
+
 				DestroyBlock (x, y, true);
 			}
 		}
-		
 	}
 
 	public void DestroyBlock(float x, float y, bool explode) {
@@ -166,9 +133,19 @@ public class Chunk : MonoBehaviour {
 		Transform block = foregroundBlocks [xNew, yNew];
 		Block blockComponent = block.GetComponent<Block> ();
 		if (block != null) {
-			if(explode)
+			if(explode) { 
 				blockComponent.Explode ();
-			Destroy (block.gameObject);
+				if(blockComponent.dropBlock != null){
+					if(blockComponent.dropBlock.GetComponent<Item>()) {
+						GameObject.Find ("Inventory").GetComponent<Inventory>().AddItem(blockComponent.dropBlock.GetComponent<Item>());
+					}
+					else {
+						if(blockComponent.dropBlock.GetComponent<Block>().item.type == ItemType.BLOCK) 
+							GameObject.Find ("Inventory").GetComponent<Inventory>().AddItem(blockComponent.dropBlock.GetComponent<Block>().item);
+					}
+				}
+			}
+			block.gameObject.SetActive(false);
 			foregroundBlocks[xNew, yNew] = null;
 			// Now we need to check if the block above needs support. If it does, and this is gone, it should be destroyed.
 			if(yNew < chunkManager.chunkHeight) {

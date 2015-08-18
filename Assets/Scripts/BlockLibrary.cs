@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class BlockLibrary : MonoBehaviour {
 	public Transform dirt;
@@ -15,5 +16,12 @@ public class BlockLibrary : MonoBehaviour {
 	public Transform sapling;
 	public Transform log;
 	public Transform logBottom;
+	public Transform logBlock;
 	public Transform leaves;
+	public Dictionary<Sprite, Transform> lookup = new Dictionary<Sprite, Transform>();
+
+	void Start() {
+		//lookup.Add (dirt.GetComponent<SpriteRenderer> ().sprite, dirt);
+		//lookup.Add (logBlock.GetComponent<SpriteRenderer> ().sprite, logBlock);
+	}
 }

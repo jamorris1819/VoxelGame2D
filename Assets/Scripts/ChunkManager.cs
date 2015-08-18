@@ -75,6 +75,12 @@ public class ChunkManager : MonoBehaviour {
 		chunk.DestroyBlock (position.x, position.y, remains);
 	}
 
+	public void DestroyDirectBlock(float x, float y, bool remains) {
+		Vector2 position = new Vector2(x, y);
+		Chunk chunk = GetChunk (x).GetComponent<Chunk>();
+		chunk.DestroyBlock (position.x - chunk.transform.position.x, position.y, remains);
+	}
+	
 	public Transform GetBlock(float x, float y) {
 		Vector2 position = GetPosition (x, y);
 		Chunk chunk = GetChunk (x).GetComponent<Chunk>();
@@ -95,5 +101,12 @@ public class ChunkManager : MonoBehaviour {
 		if (GetBlock (x, y) == null) {
 			chunk.PlaceBlock (position.x, position.y, block);
 		}
+	}
+
+	public void PlaceDirectBlock(float x, float y, Transform block) {
+		Vector2 position = new Vector2(x, y);
+		Chunk chunk = GetChunk (x).GetComponent<Chunk>();
+		if(chunk.GetBlock (x - chunk.transform.position.x, y) == false)
+			chunk.PlaceBlock (position.x - chunk.transform.position.x, position.y, block);
 	}
 }

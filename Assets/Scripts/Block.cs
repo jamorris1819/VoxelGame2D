@@ -1,13 +1,17 @@
 using UnityEngine;
 using System.Collections;
 
+public enum ToolType { AXE, SHOVEL, PICKAXE }
+
 public class Block : MonoBehaviour {
 
 	public new string name;
-	public string specialistTool;
+	public ToolType specialistTool;
 	public float health;
 	public Transform particle;
 	public bool needsSupport;
+	public Transform dropBlock;
+	public Item item;
 
 	BlockLibrary blockLibrary;
 	ChunkManager chunkManager;
@@ -17,28 +21,22 @@ public class Block : MonoBehaviour {
 	void Start () {
 		blockLibrary = GameObject.Find ("WorldGenerator").GetComponent<BlockLibrary> ();
 		chunkManager = GameObject.Find ("WorldGenerator").GetComponent<ChunkManager> ();
-		/*if (name == "Sapling") {
-			// this tree must grow!
-			Vector2 pos = new Vector2(Mathf.Floor (transform.position.x), Mathf.Floor (transform.position.y));
-			Debug.Log (chunkManager.BlockToWorldPosX(pos.x));
-			//if(generator.GrowingRoom(pos.x, pos.y)){
-				chunkManager.DestroyBlock (pos.x, pos.y, false);
-				chunkManager.PlaceBlock(chunkManager.BlockToWorldPosX(pos.x), chunkManager.GetChunk (pos.x).InverseTransformPoint (new Vector2(0, pos.y)).y, blockLibrary.logBottom);
-				chunkManager.PlaceBlock(pos.x, pos.y + 1, blockLibrary.log);
-				chunkManager.PlaceBlock(pos.x, pos.y + 2, blockLibrary.log);
-				chunkManager.PlaceBlock(pos.x - 1, pos.y + 3, blockLibrary.leaves);
-				chunkManager.PlaceBlock(pos.x - 1, pos.y + 4, blockLibrary.leaves);
-				chunkManager.PlaceBlock(pos.x - 1, pos.y + 5, blockLibrary.leaves);
-				chunkManager.PlaceBlock(pos.x, pos.y + 3, blockLibrary.leaves);
-				chunkManager.PlaceBlock(pos.x, pos.y + 4, blockLibrary.leaves);
-				chunkManager.PlaceBlock(pos.x, pos.y + 5, blockLibrary.leaves);
-				chunkManager.PlaceBlock(pos.x + 1, pos.y + 3, blockLibrary.leaves);
-				chunkManager.PlaceBlock(pos.x + 1, pos.y + 4, blockLibrary.leaves);
-				chunkManager.PlaceBlock(pos.x + 1, pos.y + 5, blockLibrary.leaves);
-			//} else {
-			//	generator.DestroyBlock (pos.x, pos.y, null);
-			//}
-		}*/
+		transform.name = name;
+		if (name == "Sapling") {
+			chunkManager.DestroyDirectBlock (transform.position.x, transform.position.y, false);
+			chunkManager.PlaceDirectBlock(transform.position.x, transform.position.y, blockLibrary.logBottom);
+			chunkManager.PlaceDirectBlock(transform.position.x, transform.position.y + 1, blockLibrary.log);
+			chunkManager.PlaceDirectBlock(transform.position.x, transform.position.y + 2, blockLibrary.log);
+			chunkManager.PlaceDirectBlock(transform.position.x - 1, transform.position.y + 3, blockLibrary.leaves);
+			chunkManager.PlaceDirectBlock(transform.position.x - 1, transform.position.y + 4, blockLibrary.leaves);
+			chunkManager.PlaceDirectBlock(transform.position.x - 1, transform.position.y + 5, blockLibrary.leaves);
+			chunkManager.PlaceDirectBlock(transform.position.x, transform.position.y + 3, blockLibrary.leaves);
+			chunkManager.PlaceDirectBlock(transform.position.x, transform.position.y + 4, blockLibrary.leaves);
+			chunkManager.PlaceDirectBlock(transform.position.x, transform.position.y + 5, blockLibrary.leaves);
+			chunkManager.PlaceDirectBlock(transform.position.x + 1, transform.position.y + 3, blockLibrary.leaves);
+			chunkManager.PlaceDirectBlock(transform.position.x + 1, transform.position.y + 4, blockLibrary.leaves);
+			chunkManager.PlaceDirectBlock(transform.position.x + 1, transform.position.y + 5, blockLibrary.leaves);
+		}
 	}
 
 	public void Explode() {
